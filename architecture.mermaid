@@ -1,0 +1,31 @@
+graph TD
+    User((User))
+    
+    subgraph Application
+        Main[main.py<br/>Event Loop]
+        VP[VideoProcessor<br/>Video Capture]
+        ROI[ROISelector<br/>Mouse Logic]
+        OCR[OCREngine<br/>Tesseract Wrapper]
+        Utils[utils.py<br/>Helpers]
+    end
+
+    subgraph External
+        Cam[Camera/Video File]
+        Tess[Tesseract OCR]
+    end
+
+    User -->|Interacts| Main
+    Main -->|Get Frame| VP
+    VP -->|Read| Cam
+    
+    Main -->|Mouse Events| ROI
+    ROI -->|Store Points| ROI
+    
+    Main -->|Draws| Utils
+    
+    User -->|Press Space| Main
+    Main -->|Extract Text| OCR
+    OCR -->|Preprocess| Utils
+    OCR -->|Execute| Tess
+    
+    Main -->|Display| User
